@@ -93,9 +93,37 @@ const INITIAL_BUILDER_DATA = {
 };
 
 export const AppProvider = ({ children }) => {
-  const [jobDescription, setJobDescription] = useState('');
-  const [resume, setResume] = useState('');
-  const [resumeData, setResumeData] = useState(INITIAL_BUILDER_DATA);
+  const [jobDescription, setJobDescription] = useState(() => {
+    return localStorage.getItem('skillsync_jobDescription') || '';
+  });
+  const [resume, setResume] = useState(() => {
+    return localStorage.getItem('skillsync_resume') || '';
+  });
+  const [resumeData, setResumeData] = useState(() => {
+    const saved = localStorage.getItem('skillsync_resumeData');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse saved resumeData from localStorage", e);
+      }
+    }
+    return INITIAL_BUILDER_DATA;
+  });
+
+
+  // Sync to localStorage
+  useEffect(() => {
+    localStorage.setItem('skillsync_jobDescription', jobDescription);
+  }, [jobDescription]);
+
+  useEffect(() => {
+    localStorage.setItem('skillsync_resume', resume);
+  }, [resume]);
+
+  useEffect(() => {
+    localStorage.setItem('skillsync_resumeData', JSON.stringify(resumeData));
+  }, [resumeData]);
 
   // Compute ATS analysis globally
   const analysis = useATSAnalyzer(jobDescription, resume);

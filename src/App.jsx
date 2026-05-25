@@ -7,6 +7,8 @@ import LandingPage from './pages/LandingPage';
 import AnalyzerPage from './pages/AnalyzerPage';
 import BuilderPage from './pages/BuilderPage';
 import ExportPage from './pages/ExportPage';
+import AutoBuildPage from './pages/AutoBuildPage';
+import ErrorBoundary from './components/ErrorBoundary';
 
 export const App = () => {
   // Theme State with local storage and media query synchronization
@@ -30,21 +32,24 @@ export const App = () => {
   return (
     <AppProvider>
       <BrowserRouter>
-        <div className="app-container">
-          {/* Persistent Glassmorphic Header */}
-          <Header theme={theme} toggleTheme={toggleTheme} />
-          
-          {/* Main Routing Context */}
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/analyze" element={<AnalyzerPage />} />
-            <Route path="/builder" element={<BuilderPage />} />
-            <Route path="/export" element={<ExportPage />} />
-          </Routes>
-          
-          {/* Persistent Footer */}
-          <Footer />
-        </div>
+        <ErrorBoundary>
+          <div className="app-container">
+            {/* Persistent Glassmorphic Header */}
+            <Header theme={theme} toggleTheme={toggleTheme} />
+            
+            {/* Main Routing Context */}
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/analyze" element={<AnalyzerPage />} />
+              <Route path="/builder" element={<BuilderPage />} />
+              <Route path="/auto-build" element={<AutoBuildPage />} />
+              <Route path="/export" element={<ExportPage />} />
+            </Routes>
+            
+            {/* Persistent Footer */}
+            <Footer />
+          </div>
+        </ErrorBoundary>
       </BrowserRouter>
     </AppProvider>
   );

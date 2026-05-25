@@ -55,7 +55,9 @@ export const ExportPage = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
-        const containerWidth = window.innerWidth - 32; // Responsive bounds
+        // More aggressive scale factor calculation
+        const padding = window.innerWidth <= 480 ? 48 : 80;
+        const containerWidth = window.innerWidth - padding;
         const newScale = Math.min(1, containerWidth / 794); // 210mm in pixels
         setScale(newScale);
       } else {
@@ -580,7 +582,7 @@ export const ExportPage = () => {
   return (
     <div className="export-layout">
       {/* Sidebar Controls */}
-      <div className="export-controls">
+      <div className="export-controls" style={{ minWidth: 0 }}>
         <div className="control-group">
           <label className="control-label">
             <Layout size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
@@ -640,7 +642,7 @@ export const ExportPage = () => {
             <button 
               onClick={handlePrint}
               className="theme-toggle-btn btn-primary"
-              style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '0.5rem', padding: '0.8rem' }}
+              style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '0.5rem', padding: '0.8rem', boxSizing: 'border-box' }}
             >
               <Download size={16} />
               <span>Download PDF</span>
@@ -649,7 +651,7 @@ export const ExportPage = () => {
             <Link 
               to="/builder"
               className="theme-toggle-btn btn-primary"
-              style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '0.5rem', padding: '0.8rem', textDecoration: 'none' }}
+              style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '0.5rem', padding: '0.8rem', textDecoration: 'none', boxSizing: 'border-box' }}
             >
               <Sliders size={16} />
               <span>Open Resume Builder</span>
@@ -659,9 +661,9 @@ export const ExportPage = () => {
       </div>
 
       {/* A4 Preview / Email Container */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', minWidth: 0 }}>
         {/* Tab Headers */}
-        <div className="tab-header-container" style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', gap: '1.5rem', marginBottom: '0.5rem' }}>
+        <div className="tab-header-container" style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', gap: '1.5rem', marginBottom: '0.5rem', overflowX: 'auto', width: '100%', scrollbarWidth: 'none', boxSizing: 'border-box' }}>
           <button 
             onClick={() => setActiveTab('resume')}
             className={`tab-btn ${activeTab === 'resume' ? 'active' : ''}`}
